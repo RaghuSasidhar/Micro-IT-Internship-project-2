@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #game {
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        input, button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <h1>Number Guessing Game</h1>
+        <p>I'm thinking of a number between <strong>1</strong> and <strong>100</strong>.</p>
+        <p>You have <span id="attempts">3</span> attempts to guess it correctly!</p>
+        <input type="number" id="guess" placeholder="Enter your guess">
+        <button onclick="checkGuess()">Submit</button>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        const lowerLimit = 1;
+        const upperLimit = 100;
+        let numberToGuess = Math.floor(Math.random() * (upperLimit - lowerLimit + 1)) + lowerLimit;
+        let attempts = 3;
+
+        function checkGuess() {
+            const guess = parseInt(document.getElementById("guess").value);
+            const feedback = document.getElementById("feedback");
+
+            if (isNaN(guess) || guess < lowerLimit || guess > upperLimit) {
+                feedback.textContent = "Please enter a valid number between " + lowerLimit + " and " + upperLimit + ".";
+                return;
+            }
+
+            if (guess === numberToGuess) {
+                feedback.textContent = "🎉 Congratulations! You guessed the correct number.";
+                document.getElementById("guess").disabled = true;
+                return;
+            } else if (guess < numberToGuess) {
+                feedback.textContent = "Too low!";
+            } else {
+                feedback.textContent = "Too high!";
+            }
+
+            attempts--;
+            document.getElementById("attempts").textContent = attempts;
+
+            if (attempts === 0) {
+                feedback.textContent = `😢 Sorry, you've run out of attempts! The number was ${numberToGuess}.`;
+                document.getElementById("guess").disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
